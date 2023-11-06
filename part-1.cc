@@ -13,32 +13,46 @@
 #include <string>
 #include <vector>
 #include <climits>
+#include <bits/stdc++.h> 
 using namespace std;
 
-
-int main (){
-    //{length, price}. access with prices[x][1]
+int cutRod(int length){
+        //{length, price}. access with prices[x][1]
+                                //  0      1      2       3       4        5        6         7
     vector<vector<int>> prices = {{1,1}, {2,5}, {4,9}, {6,17}, {8,20}, {10,30}, {12, 36}, {16, 48}};
-    //                              0      1      2       3       4        5        6         7
-    vector<int> cost, bestCut = {0};
 
-    cout << "did this work?     " << prices[3][1] << endl ;
-    int numOfPrices = prices.size() - 1;
-    cout << numOfPrices << endl;
-    int i, j , localmax = 0;
+    vector<int> maxProfit(length + 1, 0);
 
-    for(i; i < numOfPrices; ++i){
-        cout << "get here?";
-        localmax = INT_MIN;
-        for(j; j < i; ++j){
-            cout << "localmax < prices[i][0] + cost[i - j]" << localmax << prices[i][0] + cost[i - j] << endl;
-            if (localmax < prices[i][0] + cost[i - j]){
-                 localmax = prices[i][0] + cost[i - j];
-                 bestCut[i] = i;
+    for(int i = 1; i <= length; i++){
+        int localmax = INT_MIN;
+        for(int j = 0; j < prices.size(); j++){
+            if(prices[j][0] <= i){
+                localmax = max(localmax, prices[j][1] + maxProfit[i - prices[j][0]]);
             }
         }
-        cost[i] = localmax;
+        maxProfit[i] = localmax;
     }
+    return maxProfit[length];
 
 
+}
+
+int main (){
+
+
+    vector<int> rodLengths = {4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
+    int localmax = INT_MIN;
+    int maxProfit = 0;
+
+        clock_t start, end;
+
+    for(int i = 0; i < rodLengths.size(); i++){
+        start = clock();
+        maxProfit = cutRod(rodLengths[i]);
+        end = clock();
+        cout << "Max profit for " << rodLengths[i] << " = " << maxProfit << endl;
+        double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+        cout << "Time taken by program is : " << fixed << time_taken << setprecision(5);
+        cout << " sec " << endl;
+    }
 }
