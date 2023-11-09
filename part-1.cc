@@ -23,13 +23,19 @@ int cutRod(int length){
 
     vector<int> maxProfit(length + 1, 0);
 
+    // loop 1 through the length of the given rod
     for(int i = 1; i <= length; i++){
+        //set local max to the lowest possible value
         int localmax = INT_MIN;
+        //loop through the prices vector
         for(int j = 0; j < prices.size(); j++){
+            // if the length of the rod is greater than the current price
             if(prices[j][0] <= i){
+                // set the local max to the price of the current length rod + the max profit of the remaining rod
                 localmax = max(localmax, prices[j][1] + maxProfit[i - prices[j][0]]);
             }
         }
+        // set the max profit of the current length rod to the local max
         maxProfit[i] = localmax;
     }
     return maxProfit[length];
@@ -44,7 +50,7 @@ int main (){
     int localmax = INT_MIN;
     int maxProfit = 0;
 
-        clock_t start, end;
+    clock_t start, end;
 
     for(int i = 0; i < rodLengths.size(); i++){
         start = clock();
