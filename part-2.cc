@@ -20,16 +20,29 @@
 
 using namespace std;
 
+/**
+ * @brief Get the Num Ways object
+ * 
+ * @param amt 
+ * @param coins 
+ * @param numCoins 
+ * @return long 
+ */
 long getNumWays(long amt, long coins[], long numCoins){
 
     long numWays[amt + 1];
+    // set all values in numWays to 0
     for(int i = 0; i <= amt; i++){
         numWays[i] = 0;
     }
+    // set the first value to 1
     numWays[0] = 1;
 
+    // loop through the coins
     for(int i = 0; i < numCoins; i++){
+        // loop through the numWays array
         for(int j = coins[i]; j <= amt; j++){
+            // add the number of ways to get to the current amount - the current coin to the current amount
             numWays[j] += numWays[j - coins[i]];
         }
     }
@@ -38,31 +51,58 @@ long getNumWays(long amt, long coins[], long numCoins){
 
 }
 
-// long getNumWays(long amt, long coins[], long numCoins){
+/**
+ * @brief Get the Coin Combinations object
+ * 
+ * @param coins 
+ * @param n 
+ * @param amount 
+ */
+void getCoinCombinations(long coins[], int n, int amount) {
+    
+    vector<vector<vector<vector<int>>>> ways(amount + 1, vector<vector<vector<int>>>(n + 1));
 
-//     long numWays[amt + 1];
-//     for(int i = 0; i <= amt; i++){
-//         numWays[i] = 0;
-//     }
-//     numWays[0] = 1;
+    // Initialize the first column of the 2D array
+    for (int i = 0; i <= n; ++i) {
+        ways[0][i].push_back({});
+    }
 
-//     for(int i = 0; i < numCoins; i++){
-//         for(int j = coins[i]; j <= amt; j++){
-//             numWays[j] += numWays[j - coins[i]];
 
-//         }
-//     }
+    for (int i = 1; i <= amount; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            if (i - coins[j - 1] >= 0) {
+                for (vector<int> combination : ways[i - coins[j - 1]][j]) {
+                    vector<int> temp_combination = combination;
+                    temp_combination.push_back(coins[j - 1]);
+                    ways[i][j].push_back(temp_combination);
+                }
+            }
 
-//     return numWays[amt];
+            if (j > 1) {
+                for (vector<int> combination : ways[i][j - 1]) {
+                    ways[i][j].push_back(combination);
+                }
+            }
+        }
+    }
 
-// }
 
+    // Print the combinations
+    for(int i = 0; i < ways[amount][n].size(); i++){
+        for(int j = 0; j < ways[amount][n][i].size(); j++){
+            std::cout << ways[amount][n][i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
 
 int main(){
 
     clock_t start, end;
     long numWays;
     double time_taken;
+
+    cout << endl << "Coin Change Problem : " << endl << endl;
 
 
     long coins[10] = {1, 5, 10, 25, 50, 100, 200, 500, 1000, 2000};
@@ -96,4 +136,19 @@ int main(){
     }
     cout << "-----------------------------------------------------------------" << endl;
     cout << endl;
+
+    long amtsToPrint[4] = {10, 25, 50, 100};
+    
+    for(int i = 0; i < 4; ++i){
+        cout << "Amount: " << amtsToPrint[i] << endl;
+        getCoinCombinations(coins, 4, amtsToPrint[i]);
+    }
+        cout << "-----------------------------------------------------------------------------------" << endl;
+
+    for(int i = 0; i < 4; ++i){
+        cout << "Amount: " << amtsToPrint[i] << endl;
+        getCoinCombinations(wizardCoins, 3, amtsToPrint[i]);
+    }
+        cout << "-----------------------------------------------------------------------------------" << endl;
+
 }

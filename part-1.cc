@@ -45,6 +45,8 @@ int cutRod(int length){
 
 int main (){
 
+    cout << endl << "Rod Cut Problem : " << endl << endl;
+
 
     vector<int> rodLengths = {4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
     int localmax = INT_MIN;
@@ -59,6 +61,8 @@ int main (){
         cout << "Max profit for " << rodLengths[i] << " = " << maxProfit << endl;
         double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
         cout << "Time taken by program is : " << fixed << time_taken << setprecision(5);
-        cout << " sec " << endl;
+        cout << " sec " << endl << endl;
     }
+
+    cout << endl << endl;
 }
