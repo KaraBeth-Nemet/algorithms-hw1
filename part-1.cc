@@ -16,6 +16,12 @@
 #include <bits/stdc++.h> 
 using namespace std;
 
+/**
+ * @brief find the max profit for a given rod length
+ * 
+ * @param length 
+ * @return int 
+ */
 int cutRod(int length){
         //{length, price}. access with prices[x][1]
                                 //  0      1      2       3       4        5        6         7
@@ -29,7 +35,7 @@ int cutRod(int length){
         int localmax = INT_MIN;
         //loop through the prices vector
         for(int j = 0; j < prices.size(); j++){
-            // if the length of the rod is greater than the current price
+            // if the length of the rod is greater than the current 
             if(prices[j][0] <= i){
                 // set the local max to the price of the current length rod + the max profit of the remaining rod
                 localmax = max(localmax, prices[j][1] + maxProfit[i - prices[j][0]]);

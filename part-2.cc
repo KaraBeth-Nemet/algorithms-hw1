@@ -21,7 +21,7 @@
 using namespace std;
 
 /**
- * @brief Get the Num Ways object
+ * @brief Get the number of ways an amount can be made with a given set of coins
  * 
  * @param amt 
  * @param coins 
@@ -52,7 +52,7 @@ long getNumWays(long amt, long coins[], long numCoins){
 }
 
 /**
- * @brief Get the Coin Combinations object
+ * @brief print the combinations of the different ways to make an amount with a given set of coins
  * 
  * @param coins 
  * @param n 
@@ -67,27 +67,25 @@ void getCoinCombinations(long coins[], int n, int amount) {
         ways[0][i].push_back({});
     }
 
-
     for (int i = 1; i <= amount; ++i) {
         for (int j = 1; j <= n; ++j) {
             if (i - coins[j - 1] >= 0) {
-                for (vector<int> combination : ways[i - coins[j - 1]][j]) {
-                    vector<int> temp_combination = combination;
-                    temp_combination.push_back(coins[j - 1]);
-                    ways[i][j].push_back(temp_combination);
+                for (int k = 0; k < ways[i - coins[j - 1]][j].size(); ++k) {
+                    vector<int> combination = ways[i - coins[j - 1]][j][k];
+                    combination.push_back(coins[j - 1]);
+                    ways[i][j].push_back(combination);
                 }
             }
 
             if (j > 1) {
-                for (vector<int> combination : ways[i][j - 1]) {
-                    ways[i][j].push_back(combination);
+                for (int k = 0; k < ways[i][j - 1].size(); ++k) {
+                    ways[i][j].push_back(ways[i][j - 1][k]);
                 }
             }
         }
     }
 
-
-    // Print the combinations
+     // Print the combinations
     for(int i = 0; i < ways[amount][n].size(); i++){
         for(int j = 0; j < ways[amount][n][i].size(); j++){
             std::cout << ways[amount][n][i][j] << " ";
@@ -141,13 +139,21 @@ int main(){
     
     for(int i = 0; i < 4; ++i){
         cout << "Amount: " << amtsToPrint[i] << endl;
+        start = clock();
         getCoinCombinations(coins, 4, amtsToPrint[i]);
+        end = clock();
+        time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+        cout << "Time take to run: " << setprecision(5) << time_taken << " sec" << endl;
     }
         cout << "-----------------------------------------------------------------------------------" << endl;
 
     for(int i = 0; i < 4; ++i){
         cout << "Amount: " << amtsToPrint[i] << endl;
+        start = clock();
         getCoinCombinations(wizardCoins, 3, amtsToPrint[i]);
+        end = clock();
+        time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+        cout << "Time take to run: " << setprecision(5) << time_taken << " sec" << endl;
     }
         cout << "-----------------------------------------------------------------------------------" << endl;
 
